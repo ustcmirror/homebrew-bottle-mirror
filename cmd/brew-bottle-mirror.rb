@@ -1,5 +1,6 @@
 require "formula"
 require 'thread'
+require 'cgi'  # urldecode (unescape)
 
 class ThreadPool
   class Worker
@@ -132,6 +133,8 @@ Formula.core_files.each do |fi|
       end
       url = "#{root_url}/#{filename}"
 
+      # fix escaped filename on filesystem by CGI::unescape
+      filename = CGI::unescape(filename)
       file = HOMEBREW_CACHE/filename
       tmpfile = HOMEBREW_CACHE/"#{filename}.tmp"
       next if File.exist?(file)
